@@ -1,62 +1,25 @@
-import requests
 from pyrogram import filters
-from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup, Message
 
-from Ankit import BOT_NAME, BOT_USERNAME
-from Ankit import pbot as ankit
+from Ankit import pbot
 
 
-@ankit.on_message(filters.command("write"))
-async def handwrite(_, message: Message):
-    if not message.reply_to_message:
-        text = message.text.split(None, 1)[1]
-        m = await fallen.send_message(
-            message.chat.id, "`Please wait...,\n\nWriting your text...`"
-        )
-        API = f"https://api.sdbots.tk/write?text={text}"
-        req = requests.get(API).url
-        caption = f"""
-Successfully Written Text 💘
-
-✨ **Written By :** [{BOT_NAME}](https://t.me/{BOT_USERNAME})
-🥀 **Requested by :** {message.from_user.mention}
-❄ **Link :** `{req}`
-"""
-        await m.delete()
-        await fallen.send_photo(
-            message.chat.id,
-            photo=req,
-            caption=caption,
-            reply_markup=InlineKeyboardMarkup(
-                [[InlineKeyboardButton("• ᴛᴇʟᴇɢʀᴀᴩʜ •", url=f"{req}")]]
-            ),
-        )
-    else:
-        lol = message.reply_to_message.text
-        m = await fallen.send_message(
-            message.chat.id, "`Please wait...,\n\nWriting your text...`"
-        )
-        API = f"https://api.sdbots.tk/write?text={lol}"
-        req = requests.get(API).url
-        caption = f"""
-Successfully Written Text 💘
-
-✨ **Written By :** [{BOT_NAME}](https://t.me/{BOT_USERNAME})
-🥀 **Requested by :** {message.from_user.mention}
-❄ **Link :** `{req}`
-"""
-        await m.delete()
-        await fallen.send_photo(
-            message.chat.id,
-            photo=req,
-            caption=caption,
-            reply_markup=InlineKeyboardMarkup(
-                [[InlineKeyboardButton("• ᴛᴇʟᴇɢʀᴀᴩʜ •", url=f"{req}")]]
-            ),
-        )
+@pbot.on_message(filters.command("write"))
+async def handwriting(_, message):
+    if len(message.command) < 2:
+        return await message.reply_text("» ɢɪᴠᴇ sᴏᴍᴇ ᴛᴇxᴛ ᴛᴏ ᴡʀɪᴛᴇ ɪᴛ ᴏɴ ᴍʏ ᴄᴏᴩʏ...")
+    m = await message.reply_text("» ᴡᴀɪᴛ ᴀ sᴇᴄ, ʟᴇᴛ ᴍᴇ ᴡʀɪᴛᴇ ᴛʜᴀᴛ ᴛᴇxᴛ...")
+    name = (
+        message.text.split(None, 1)[1]
+        if len(message.command) < 3
+        else message.text.split(None, 1)[1].replace(" ", "%20")
+    )
+    hand = "https://api.sdbots.tk/write?text=" + name
+    await m.edit("» ᴜᴩʟᴏᴀᴅɪɴɢ...")
+    await pbot.send_chat_action(message.chat.id, "upload_photo")
+    await message.reply_photo(hand, caption="ᴡʀɪᴛᴛᴇɴ ᴡɪᴛʜ 🖊 ʙʏ [ᴘʀᴏᴊᴇᴄᴛ-x](github.com/NVS-OFFICIAL)")
 
 
-__mod_name__ = "WʀɪᴛᴇTᴏᴏʟ"
+__mod_name__ = "Hᴀɴᴅᴡʀɪᴛᴇ"
 
 __help__ = """
 
